@@ -16,7 +16,6 @@ const SensorDashboard = () => {
         const latestData = response.data;
 
         if (latestData) {
-          // tempC, vReal, flow を適切に配列として処理
           setTemperature(latestData.tempC || Array(6).fill(null));
           setVibration(latestData.vReal || Array(6).fill(null));
           setFlowRate(latestData.flow || Array(2).fill(null));
@@ -42,51 +41,51 @@ const SensorDashboard = () => {
 
       {/* Content */}
       <div className="flex flex-col items-center justify-center p-4">
-        <div className="flex flex-col items-center justify-center px-6 py-6 bg-[#F3F4F6] rounded-lg mt-8 gap-3">
+        <div className="px-6 py-6 bg-[#F3F4F6] rounded-lg mt-8 gap-6 w-full">
           
           {/* 温度センサ */}
-          <div className="px-4 pt-3 bg-white rounded-md shadow w-full">
-            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">
-              温度センサ
-            </h2>
-            {temperature.map((temp, index) => (
-              <div key={index} className="text-center mb-4 w-full border border-gray-200 rounded-md p-4">
-                <p className="text-[#868DAA]">温度センサ {index + 1}</p>
-                <p className="text-lg font-bold text-gray-900">
-                  {temp !== null ? `${temp} °C` : "データなし"}
-                </p>
-              </div>
-            ))}
+          <div className="bg-white rounded-md shadow p-4">
+            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">温度センサ</h2>
+            <div className="flex flex-row justify-center gap-4">
+              {temperature.map((temp, index) => (
+                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
+                  <p className="text-[#868DAA]">温度センサ {index + 1}</p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {temp !== null ? `${temp} °C` : "データなし"}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 振動センサ */}
-          <div className="px-4 pt-3 bg-white rounded-md shadow w-full">
-            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">
-              振動センサ
-            </h2>
-            {vibration.map((vib, index) => (
-              <div key={index} className="text-center mb-4 w-full border border-gray-200 rounded-md p-4">
-                <p className="text-[#868DAA]">振動センサ {index + 1}</p>
-                <p className="text-lg font-bold text-gray-900">
-                  {vib !== null ? `${vib} Hz` : "データなし"}
-                </p>
-              </div>
-            ))}
+          <div className="bg-white rounded-md shadow p-4">
+            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">振動センサ</h2>
+            <div className="flex flex-row justify-center gap-4">
+              {vibration.map((vib, index) => (
+                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
+                  <p className="text-[#868DAA]">振動センサ {index + 1}</p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {vib !== null ? `${vib} Hz` : "データなし"}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 水流センサ */}
-          <div className="px-4 pt-3 bg-white rounded-md shadow w-full">
-            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">
-              水流センサ
-            </h2>
-            {flowRate.map((flow, index) => (
-              <div key={index} className="text-center mb-4 w-full border border-gray-200 rounded-md p-4">
-                <p className="text-[#868DAA]">水流センサ {index + 1}</p>
-                <p className="text-lg font-bold text-gray-900">
-                  {flow !== null ? `${flow} L/min` : "データなし"}
-                </p>
-              </div>
-            ))}
+          <div className="bg-white rounded-md shadow p-4">
+            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">水流センサ</h2>
+            <div className="flex flex-row justify-center gap-4">
+              {flowRate.map((flow, index) => (
+                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
+                  <p className="text-[#868DAA]">水流センサ {index + 1}</p>
+                  <p className="text-lg font-bold text-gray-900">
+                    {flow !== null ? `${flow} L/min` : "データなし"}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>
