@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// 最新データの取得 (デバイスIDを動的に指定)
-app.get("/api/data/:deviceId", async (req, res) => {
-  const deviceId = req.params.deviceId;
+// 最新データの取得（deviceId を固定）
+app.get("/api/data/kurodashika", async (req, res) => {
+  const deviceId = "kurodashika";
   try {
     const database = client.database(databaseId);
     const container = database.container(containerId);
@@ -37,7 +37,7 @@ app.get("/api/data/:deviceId", async (req, res) => {
       query: `SELECT TOP 1 * FROM c WHERE c.device = @deviceId ORDER BY c.time DESC`,
       parameters: [{ name: "@deviceId", value: deviceId }],
     };
-    
+
     const { resources: items } = await container.items.query(querySpec).fetchAll();
     if (items.length === 0) {
       return res.status(404).json({ error: `No data found for deviceId: ${deviceId}` });
@@ -51,7 +51,7 @@ app.get("/api/data/:deviceId", async (req, res) => {
       tempC: [latestData.tempC1, latestData.tempC2, latestData.tempC3, latestData.tempC4, latestData.tempC5, latestData.tempC6],
       flow: [latestData.Flow1, latestData.Flow2]
     };
-    
+
     res.status(200).json(responseData);
   } catch (error) {
     console.error("Error fetching latest data:", error);
@@ -62,9 +62,9 @@ app.get("/api/data/:deviceId", async (req, res) => {
 // WebSocket 通信
 wss.on("connection", (ws) => {
   console.log("WebSocket connected");
-  
-  ws.on("message", async (message) => {
-    const deviceId = message.toString();
+
+  ws.on("message", async () => {
+    const deviceId = "kurodashika";
     try {
       const database = client.database(databaseId);
       const container = database.container(containerId);
@@ -72,7 +72,7 @@ wss.on("connection", (ws) => {
         query: `SELECT TOP 1 * FROM c WHERE c.device = @deviceId ORDER BY c.time DESC`,
         parameters: [{ name: "@deviceId", value: deviceId }],
       };
-      
+
       const { resources: items } = await container.items.query(querySpec).fetchAll();
       if (items.length > 0) {
         const latestData = items[0];

@@ -6,12 +6,12 @@ const SensorDashboard = () => {
   const [temperature, setTemperature] = useState<number[]>(Array(6).fill(null));
   const [vibration, setVibration] = useState<number[]>(Array(6).fill(null));
   const [flowRate, setFlowRate] = useState<number[]>(Array(2).fill(null));
-  const backendUrl = "https://hainetukaishusouti.onrender.com"; // バックエンドのURL
+  const backendUrl = "https://showarealtime.onrender.com"; // バックエンドのURL
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/data/SDsesnsor-demo1`);
+        const response = await axios.get(`${backendUrl}/api/data/kurodashika`);
         const latestData = response.data;
 
         setTemperature([
