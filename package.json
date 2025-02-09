@@ -4,14 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "build": "echo 'No build step needed for backend' ",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build"
-}
-
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -37,4 +32,4 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/jest-dom": "^5.16.5"
   }
-
+}
