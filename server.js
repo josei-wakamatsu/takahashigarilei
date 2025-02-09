@@ -28,8 +28,8 @@ app.get("/", (req, res) => {
 });
 
 // 最新データの取得（deviceId を固定）
-app.get("/api/data/kurodashika", async (req, res) => {
-  const deviceId = "kurodashika";
+app.get("/api/data/kurodasika", async (req, res) => {
+  const deviceId = "kurodasika";
   try {
     const database = client.database(databaseId);
     const container = database.container(containerId);

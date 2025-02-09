@@ -11,7 +11,7 @@ const SensorDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/data/kurodashika`);
+        const response = await axios.get(`${backendUrl}/api/data/kurodasika`);
         const latestData = response.data;
 
         setTemperature([
