@@ -3,31 +3,24 @@ import axios from "axios";
 import { Menu } from "lucide-react";
 
 const SensorDashboard = () => {
-  const [temperature, setTemperature] = useState<number[]>(Array(6).fill(null));
-  const [vibration, setVibration] = useState<number[]>(Array(6).fill(null));
-  const [flowRate, setFlowRate] = useState<number[]>(Array(2).fill(null));
+  const [temperature, setTemperature] = useState<(number | null)[]>(Array(6).fill(null));
+  const [vibration, setVibration] = useState<(number | null)[]>(Array(6).fill(null));
+  const [flowRate, setFlowRate] = useState<(number | null)[]>(Array(2).fill(null));
   const backendUrl = "https://showarealtime.onrender.com"; // バックエンドのURL
+  const deviceID = "kurodasika"; // デバイスID
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/data/kurodasika`);
+        const response = await axios.get(`${backendUrl}/api/data/${deviceID}`);
         const latestData = response.data;
 
-        setTemperature([
-          latestData.tempC1, latestData.tempC2, latestData.tempC3,
-          latestData.tempC4, latestData.tempC5, latestData.tempC6
-        ]);
-
-        setVibration([
-          latestData.vReal1, latestData.vReal2, latestData.vReal3,
-          latestData.vReal4, latestData.vReal5, latestData.vReal6
-        ]);
-
-        setFlowRate([
-          latestData.Flow1, latestData.Flow2
-        ]);
-
+        if (latestData) {
+          // tempC, vReal, flow を適切に配列として処理
+          setTemperature(latestData.tempC || Array(6).fill(null));
+          setVibration(latestData.vReal || Array(6).fill(null));
+          setFlowRate(latestData.flow || Array(2).fill(null));
+        }
       } catch (error) {
         console.error("データ取得に失敗しました:", error);
       }
