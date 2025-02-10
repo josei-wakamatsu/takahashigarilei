@@ -7,7 +7,7 @@ const SensorDashboard = () => {
   const [vibration, setVibration] = useState<(number | null)[]>(Array(6).fill(null));
   const [flowRate, setFlowRate] = useState<(number | null)[]>(Array(2).fill(null));
   const backendUrl = "https://showarealtime.onrender.com"; // バックエンドのURL
-  const deviceID = "kurodasika"; // デバイスID
+  const deviceID = "takahashigarilei"; // デバイスID
 
   useEffect(() => {
     const fetchData = async () => {
