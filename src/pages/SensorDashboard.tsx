@@ -3,9 +3,8 @@ import axios from "axios";
 import { Menu } from "lucide-react";
 
 const SensorDashboard = () => {
-  const [temperature, setTemperature] = useState<(number | null)[]>(Array(6).fill(null));
-  const [vibration, setVibration] = useState<(number | null)[]>(Array(6).fill(null));
-  const [flowRate, setFlowRate] = useState<(number | null)[]>(Array(2).fill(null));
+  const [temperature, setTemperature] = useState<(number | null)[]>(Array(2).fill(null)); // 温度センサ2つ
+  const [vibration, setVibration] = useState<(number | null)[]>(Array(4).fill(null)); // 振動センサ4つ
   const backendUrl = "https://showarealtime.onrender.com"; // バックエンドのURL
   const deviceID = "takahashigarilei"; // デバイスID
 
@@ -16,9 +15,11 @@ const SensorDashboard = () => {
         const latestData = response.data;
 
         if (latestData) {
-          setTemperature(latestData.tempC || Array(6).fill(null));
-          setVibration(latestData.vReal || Array(6).fill(null));
-          setFlowRate(latestData.flow || Array(2).fill(null));
+          // 🔹 tempC1, tempC2 のみ取得
+          setTemperature([latestData.tempC[0], latestData.tempC[1]]);
+
+          // 🔹 vReal1 ～ vReal4 のみ取得
+          setVibration([latestData.vReal[0], latestData.vReal[1], latestData.vReal[2], latestData.vReal[3]]);
         }
       } catch (error) {
         console.error("データ取得に失敗しました:", error);
@@ -48,7 +49,7 @@ const SensorDashboard = () => {
             <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">温度センサ</h2>
             <div className="flex flex-row justify-center gap-4">
               {temperature.map((temp, index) => (
-                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
+                <div key={index} className="text-center w-1/4 border border-gray-200 rounded-md p-4">
                   <p className="text-[#868DAA]">温度センサ {index + 1}</p>
                   <p className="text-lg font-bold text-gray-900">
                     {temp !== null ? `${temp} °C` : "データなし"}
@@ -63,25 +64,10 @@ const SensorDashboard = () => {
             <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">振動センサ</h2>
             <div className="flex flex-row justify-center gap-4">
               {vibration.map((vib, index) => (
-                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
+                <div key={index} className="text-center w-1/4 border border-gray-200 rounded-md p-4">
                   <p className="text-[#868DAA]">振動センサ {index + 1}</p>
                   <p className="text-lg font-bold text-gray-900">
                     {vib !== null ? `${vib} Hz` : "データなし"}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 水流センサ */}
-          <div className="bg-white rounded-md shadow p-4">
-            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">水流センサ</h2>
-            <div className="flex flex-row justify-center gap-4">
-              {flowRate.map((flow, index) => (
-                <div key={index} className="text-center w-1/6 border border-gray-200 rounded-md p-4">
-                  <p className="text-[#868DAA]">水流センサ {index + 1}</p>
-                  <p className="text-lg font-bold text-gray-900">
-                    {flow !== null ? `${flow} L/min` : "データなし"}
                   </p>
                 </div>
               ))}
