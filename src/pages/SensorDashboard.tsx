@@ -8,7 +8,7 @@ const SensorDashboard = () => {
   const [vibrationData, setVibrationData] = useState([]);
   const [temperature, setTemperature] = useState<(number | null)[]>(Array(2).fill(null));
   const [vibration, setVibration] = useState<(number | null)[]>(Array(4).fill(null));
-  const backendUrl = "https://showarealtime.onrender.com";
+  const backendUrl = "https://unozawa-backend.onrender.com";
   const deviceID = "unozawa";
 
   useEffect(() => {
