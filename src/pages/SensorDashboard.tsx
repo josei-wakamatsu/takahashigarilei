@@ -1,3 +1,4 @@
+export default SensorDashboard;
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Menu } from "lucide-react";
@@ -6,8 +7,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 const SensorDashboard = () => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [vibrationData, setVibrationData] = useState([]);
+  const [flowData, setFlowData] = useState([]); // ✅ 流量データのステート追加
   const [temperature, setTemperature] = useState<(number | null)[]>(Array(2).fill(null));
   const [vibration, setVibration] = useState<(number | null)[]>(Array(4).fill(null));
+  const [flow, setFlow] = useState<number | null>(null); // ✅ 流量の現在値
   const backendUrl = "https://unozawa-backend.onrender.com";
   const deviceID = "unozawa";
 
@@ -21,8 +24,10 @@ const SensorDashboard = () => {
           const timestamp = new Date().toLocaleTimeString();
           setTemperatureData(prevData => [...prevData.slice(-11), { time: timestamp, temp1: latestData.tempC[0]}]);
           setVibrationData(prevData => [...prevData.slice(-11), { time: timestamp, vib1: latestData.vReal[0], vib2: latestData.vReal[1]}]);
+          setFlowData(prevData => [...prevData.slice(-11), { time: timestamp, flow1: latestData.Flow1 }]); // ✅ 流量データを追加
           setTemperature([latestData.tempC[0]]);
           setVibration([latestData.vReal[0], latestData.vReal[1]]);
+          setFlow(latestData.Flow1); // ✅ 現在の流量をセット
         }
       } catch (error) {
         console.error("データ取得に失敗しました:", error);
@@ -43,6 +48,7 @@ const SensorDashboard = () => {
 
       <div className="flex flex-col items-center justify-center p-4">
         <div className="px-6 py-6 bg-[#F3F4F6] rounded-lg mt-8 gap-6 w-full">
+          
           {/* 温度センサ データ表示 */}
           <div className="bg-white rounded-md shadow p-4">
             <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">温度センサ</h2>
@@ -73,6 +79,17 @@ const SensorDashboard = () => {
             </div>
           </div>
 
+          {/* 流量センサ データ表示 */}
+          <div className="bg-white rounded-md shadow p-4">
+            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">流量センサ</h2>
+            <div className="text-center w-full border border-gray-200 rounded-md p-4">
+              <p className="text-[#868DAA]">流量センサ 1</p>
+              <p className="text-lg font-bold text-gray-900">
+                {flow !== null ? `${flow} L/min` : "データなし"}
+              </p>
+            </div>
+          </div>
+
           {/* 温度センサ グラフ */}
           <div className="bg-white rounded-md shadow p-4">
             <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">温度センサ (リアルタイム)</h2>
@@ -100,6 +117,21 @@ const SensorDashboard = () => {
                 <Legend />
                 <Line type="monotone" dataKey="vib1" stroke="#FFA500" name="振動センサ1" />
                 <Line type="monotone" dataKey="vib2" stroke="#008000" name="振動センサ2" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* 流量センサ グラフ */}
+          <div className="bg-white rounded-md shadow p-4">
+            <h2 className="text-lg font-semibold text-[#868DAA] text-center mb-4">流量センサ (リアルタイム)</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={flowData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="flow1" stroke="#0000FF" name="流量センサ1" />
               </LineChart>
             </ResponsiveContainer>
           </div>
