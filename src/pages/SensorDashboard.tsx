@@ -9,7 +9,7 @@ const SensorDashboard = () => {
   const [temperature, setTemperature] = useState<(number | null)[]>(Array(2).fill(null));
   const [vibration, setVibration] = useState<(number | null)[]>(Array(4).fill(null));
   const backendUrl = "https://showarealtime.onrender.com";
-  const deviceID = "takahashigarilei";
+  const deviceID = "unozawa";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,10 +19,10 @@ const SensorDashboard = () => {
 
         if (latestData) {
           const timestamp = new Date().toLocaleTimeString();
-          setTemperatureData(prevData => [...prevData.slice(-11), { time: timestamp, temp1: latestData.tempC[0], temp2: latestData.tempC[1] }]);
-          setVibrationData(prevData => [...prevData.slice(-11), { time: timestamp, vib1: latestData.vReal[0], vib2: latestData.vReal[1], vib3: latestData.vReal[2], vib4: latestData.vReal[3] }]);
-          setTemperature([latestData.tempC[0], latestData.tempC[1]]);
-          setVibration([latestData.vReal[0], latestData.vReal[1], latestData.vReal[2], latestData.vReal[3]]);
+          setTemperatureData(prevData => [...prevData.slice(-11), { time: timestamp, temp1: latestData.tempC[0]}]);
+          setVibrationData(prevData => [...prevData.slice(-11), { time: timestamp, vib1: latestData.vReal[0], vib2: latestData.vReal[1]}]);
+          setTemperature([latestData.tempC[0]]);
+          setVibration([latestData.vReal[0], latestData.vReal[1]]);
         }
       } catch (error) {
         console.error("データ取得に失敗しました:", error);
@@ -84,7 +84,6 @@ const SensorDashboard = () => {
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="temp1" stroke="#FF0000" name="温度センサ1" />
-                <Line type="monotone" dataKey="temp2" stroke="#0000FF" name="温度センサ2" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -101,8 +100,6 @@ const SensorDashboard = () => {
                 <Legend />
                 <Line type="monotone" dataKey="vib1" stroke="#FFA500" name="振動センサ1" />
                 <Line type="monotone" dataKey="vib2" stroke="#008000" name="振動センサ2" />
-                <Line type="monotone" dataKey="vib3" stroke="#800080" name="振動センサ3" />
-                <Line type="monotone" dataKey="vib4" stroke="#FF00FF" name="振動センサ4" />
               </LineChart>
             </ResponsiveContainer>
           </div>
